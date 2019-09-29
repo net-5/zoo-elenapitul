@@ -2,105 +2,79 @@
 using System.Collections.Generic;
 using System.Text;
 
-
 namespace Zoo
 {
-    public class Zoo 
+    public class Zoo
     {
         private string nameZoo;
-        private string[] listAnimals = new string [5];
+        private List<Animal> animals = new List<Animal>();
 
-        private string nameAnimal;
-        private string nicknameID;
-        private string favoriteFood;
-
-        public static int count;
-
-        //private DateTime arrivalDate;
-        //private DateTime departureDate;
-        
         public string NameZoo
         {
-            get { return nameZoo; }
-            set { nameZoo = value; }
+            get
+            { return nameZoo; }
+            set
+            { nameZoo = value; }
         }
 
-        public string[] ListAnimals
+        public List<Animal> Animals
         {
-            get { return listAnimals; }
-            set { listAnimals = value; }
-        }
-
-        public string NameAnimal
-        {
-            get { return nameAnimal; }
-            set { nameAnimal = value; }
-        }
-
-        public string NicknameID
-        {
-            get { return nicknameID; }
-            set { nicknameID = value; }
-        }
-
-        public string FavoriteFood
-        {
-            get { return favoriteFood; }
-            set { favoriteFood = value; }
-        }
-        
-
-        static void AddAnimal()
-        {
-            count = 0;
-        }
-       
-        public void AddAnimal(string name, string nickname)
-         {
-            if(count < ListAnimals.Length)
+            get
             {
-                NameAnimal = name;
-                NicknameID = nickname;
-                count++;
-                ListAnimals[count - 1] = name;
-                Console.WriteLine("Add " + NameAnimal + " called " + NicknameID);
+                return animals;
+            }
+            set
+            {
+                animals = value;
+            }
+        }
+
+        public Zoo (string nameZoo)
+        {
+            NameZoo = nameZoo;
+        }
+                     
+
+        public void AddAnimal (Animal animalToAdd)
+        {
+            if (Animals.Contains(animalToAdd))
+            {
+                Console.WriteLine("This animal is already in the system.");
+            }
+            else
+            {
+                this.Animals.Add(animalToAdd);
+                Console.WriteLine($"The {animalToAdd.Name} is added to the zoo {NameZoo}.");
+            }            
+           
+        }       
+
+        public void TransferAnimal (Animal animalToTransfer, Zoo currentZoo, Zoo newZoo)
+        {
+
+            if (Animals.Contains(animalToTransfer))
+            {
+                currentZoo.animals.Remove(animalToTransfer);
+                newZoo.AddAnimal(animalToTransfer);
+                Console.WriteLine($"The {animalToTransfer.Name} is leaving the zoo {currentZoo.NameZoo} to {newZoo.NameZoo}.");
+            }
+
+            else{
+                Console.WriteLine("This animal is not in this zoo.");
             }
             
-             else
-             {
-                 Console.WriteLine("Full capacity.");
-             }
+        }
 
-         }
-                 
-        
-        public void TransferAnimal(string name)
+        public void Details()
         {
-            int index = Array.IndexOf(ListAnimals, name);
-            if (index >= 0)
+
+            Console.WriteLine($"The {NameZoo} has {Animals.Count} animals:");
+            foreach (Animal animal in animals)
             {
-                ListAnimals[index] = "";
-                count--;
-                Console.WriteLine(NameAnimal + " has left " + NameZoo);
-            }           
-
+                Console.WriteLine(animal.Eat());
+            }
         }
 
-        public void Eat(string nickname, string food)
-        {
-            NicknameID = nickname;
-            FavoriteFood = food;
-            Console.WriteLine(NicknameID + " loves to eat " + FavoriteFood);
-        }
-
-        public void Info()
-        {
-            Console.WriteLine("In " + NameZoo + " there are " + count + " animals");
-            /*foreach (string item in ListAnimals)
-            {
-                if(item != "")
-                Console.WriteLine(item);
-            }*/
-        }
+                
     }
 }
